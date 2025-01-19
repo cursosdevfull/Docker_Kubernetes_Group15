@@ -1,0 +1,4 @@
+- Creen 3 contenedores
+- El primer contenedor puede ver al contenedor 2, pero no al contenedor 3
+- El contenedor 3 puede ver al contenedor 2, pero no al contenedor 1
+- El contenedor 2 puede ver a los contenedores 1 y 3
