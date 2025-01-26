@@ -1,4 +1,25 @@
-- Creen 3 contenedores
-- El primer contenedor puede ver al contenedor 2, pero no al contenedor 3
-- El contenedor 3 puede ver al contenedor 2, pero no al contenedor 1
-- El contenedor 2 puede ver a los contenedores 1 y 3
+# Redes compartidas
+
+### Crear Redes
+
+```
+docker network create net-01 -d bridge
+docker network create net-02 -d bridge
+```
+
+### Contenedores
+
+```
+docker run -d --name server01 nginx:alpine
+docker run -d --name server02 nginx:alpine
+docker run -d --name server03 nginx:alpine
+```
+
+### Unión a las Redes
+
+```
+docker network connect net-01 server01
+docker network connect net-01 server02
+docker network connect net-02 server03
+docker network connect net-02 server02
+```
