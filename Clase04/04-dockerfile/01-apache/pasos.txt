@@ -1,0 +1,5 @@
+1. Obtener el instalador de ubuntu y ejecutarlo
+2. Actualizar los repositorios
+3. Instalar apache
+4. Copiar los archivos estáticos al directorio de apache
+5. Iniciar el servicio de apache

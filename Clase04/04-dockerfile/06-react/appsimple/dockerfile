@@ -1,0 +1,11 @@
+FROM node:20-alpine AS building
+ARG DIR=appsimple
+WORKDIR /build
+COPY ${DIR}/package.json .
+RUN npm install
+COPY ${DIR}/ .
+RUN npm run build
+
+FROM nginx:alpine
+COPY --from=building /build/dist /usr/share/nginx/html
+CMD ["nginx", "-g", "daemon off;"]
