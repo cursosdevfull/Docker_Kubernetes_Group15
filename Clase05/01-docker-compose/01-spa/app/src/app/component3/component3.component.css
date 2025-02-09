@@ -1,0 +1,10 @@
+mat-toolbar {
+  background-color: #ccc;
+  padding: 10px 20px;
+}
+
+mat-card {
+  margin: 10px 10px;
+  background-color: #bdce96;
+  height: calc(100vh - 65px - 20px - 20px - 44px);
+}

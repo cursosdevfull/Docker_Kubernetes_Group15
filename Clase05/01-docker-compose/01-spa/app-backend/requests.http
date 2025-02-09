@@ -1,0 +1,10 @@
+post http://localhost:3000/add
+Content-Type: application/json
+
+{
+    "name": "Luis",
+    "lastname": "Baldin"
+}
+
+###
+get http://localhost:3000

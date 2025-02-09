@@ -1,0 +1,23 @@
+<mat-toolbar>
+  <h1>Component1</h1>
+</mat-toolbar>
+<mat-card>
+  <table>
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Lastname</th>
+      </tr>
+    </thead>
+    <tbody>
+      @for (user of users(); track user) {
+      <tr>
+        <td>{{ user.id }}</td>
+        <td>{{ user.name }}</td>
+        <td>{{ user.lastname }}</td>
+      </tr>
+      }
+    </tbody>
+  </table>
+</mat-card>

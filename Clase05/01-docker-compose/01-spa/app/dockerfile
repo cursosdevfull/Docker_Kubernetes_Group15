@@ -1,0 +1,18 @@
+ARG NODE_VERSION=20
+
+FROM node:${NODE_VERSION}-alpine AS stage_base
+WORKDIR /usr/app
+
+FROM stage_base AS stage_build
+RUN --mount=type=bind,source=package.json,target=package.json \
+    --mount=type=bind,source=package-lock.json,target=package-lock.json \
+    --mount=type=cache,target=/root/.npm \
+    npm ci
+COPY . .
+RUN npm run build
+
+FROM nginx:alpine
+WORKDIR /app
+COPY --from=stage_build /usr/app/dist/app/browser .
+COPY ./nginx/nginx.conf /etc/nginx/conf.d/default.conf
+CMD ["nginx", "-g", "daemon off;"]

@@ -1,0 +1,15 @@
+services:
+  server-nginx:
+    image: nginx:alpine
+    container_name: server-nginx
+    ports:
+      - 80:80
+    volumes:
+      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf:ro
+      - ./src:/var/www/html:ro
+
+  php:
+    image: php:8.2.13-fpm-alpine3.18
+    container_name: php
+    volumes:
+      - ./src:/var/www/html:ro

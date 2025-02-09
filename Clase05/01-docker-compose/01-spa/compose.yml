@@ -1,0 +1,86 @@
+services:
+  server-mysql:
+    image: mysql:8
+    container_name: server-mysql
+    env_file: ./env/envs.txt
+    volumes:
+      - vol-mysql-curso:/var/lib/mysql
+      # - ./mysql:/var/lib/mysql
+      #- /var/lib/mysql
+    networks:
+      - net-curso1
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+      start_period: 3s
+    # environment:
+    #   MYSQL_ROOT_PASSWORD: 12345
+    #   MYSQL_USER: user
+    #   MYSQL_PASSWORD: 12345
+    #   MYSQL_DATABASE: db
+
+  backend:
+    build:
+      dockerfile: dockerfile
+      context: ./app-backend
+    image: backend
+    container_name: backend
+    restart: on-failure
+    ports:
+      - 5000:4000
+    environment:
+      db_host: server-mysql
+      db_port: "3306"
+      db_user: "user"
+      db_password: "12345"
+      db_database: "db"
+      port: 4000
+    networks:
+      - net-curso1
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:4000"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+      start_period: 3s
+    depends_on:
+      server-mysql:
+        condition: service_healthy
+
+  frontend:
+    build:
+      dockerfile: dockerfile
+      context: ./app
+    image: frontend
+    container_name: frontend
+    restart: on-failure
+    ports:
+      - 80:80
+    networks:
+      - net-curso2
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+      start_period: 3s
+    depends_on:
+      backend:
+        condition: service_healthy
+
+volumes:
+  vol-mysql-curso:
+    name: vol-mysql-curso
+    # external: true
+
+networks:
+  net-curso1:
+    driver: bridge
+    name: net-curso1
+    # external: true
+  net-curso2:
+    driver: bridge
+    name: net-curso2
+    # external: true
