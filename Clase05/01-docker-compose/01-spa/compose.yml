@@ -29,7 +29,7 @@ services:
     container_name: backend
     restart: on-failure
     ports:
-      - 5000:4000
+      - 4500:4000
     environment:
       db_host: server-mysql
       db_port: "3306"
@@ -60,6 +60,8 @@ services:
       - 80:80
     networks:
       - net-curso2
+    environment:
+      - API_ENDPOINT=http://localhost:4500  
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost"]
       interval: 10s

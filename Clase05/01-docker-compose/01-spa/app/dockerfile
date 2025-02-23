@@ -15,4 +15,5 @@ FROM nginx:alpine
 WORKDIR /app
 COPY --from=stage_build /usr/app/dist/app/browser .
 COPY ./nginx/nginx.conf /etc/nginx/conf.d/default.conf
-CMD ["nginx", "-g", "daemon off;"]
+COPY ./public/env.js ./env2.js
+CMD ["sh", "-c", "envsubst < /app/env2.js > /app/env.js && nginx -g 'daemon off;'"]

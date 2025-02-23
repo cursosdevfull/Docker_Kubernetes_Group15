@@ -1,0 +1,36 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: read-pods
+subjects:
+  - kind: User
+    name: curso16
+    apiGroup: rbac.authorization.k8s.io
+roleRef:
+  kind: ClusterRole
+  name: cluster-admin
+  apiGroup: rbac.authorization.k8s.io    
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: ns-qas
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: server-web
+  namespace: ns-qas
+spec:
+  containers:
+    - name: web
+      image: nginx:alpine
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: cm-parameters
+  namespace: ns-qas
+data:
+  api_url: https://dev-api.mycompany.com
+  kafka_url: http://svc-kafka:9000  

@@ -1,0 +1,50 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: ns-qas
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: qas-reader
+  namespace: ns-qas
+rules:
+  - apiGroups: [""]
+    resources: ["pods"]
+    verbs: ["get", "watch", "list"]
+  - apiGroups: [""]
+    resources: ["configmaps"]
+    verbs: ["get", "watch", "list", "patch", "delete"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: read-pods
+  namespace: ns-qas
+subjects:
+  - kind: User
+    name: curso16
+    apiGroup: rbac.authorization.k8s.io
+roleRef:
+  kind: Role
+  name: qas-reader
+  apiGroup: rbac.authorization.k8s.io
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: server-web
+  namespace: ns-qas
+spec:
+  containers:
+    - name: web
+      image: nginx:alpine
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: cm-parameters
+  namespace: ns-qas
+data:
+  api_url: https://dev-api.mycompany.com
+  kafka_url: http://svc-kafka:9000

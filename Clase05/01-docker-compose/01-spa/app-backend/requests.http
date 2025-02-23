@@ -1,10 +1,13 @@
-post http://localhost:3000/add
+post http://localhost:5000/add
 Content-Type: application/json
 
 {
-    "name": "Luis",
-    "lastname": "Baldin"
+    "name": "Karla",
+    "lastname": "Cano"
 }
 
 ###
 get http://localhost:3000
+
+###
+get http://localhost:5000/create-table

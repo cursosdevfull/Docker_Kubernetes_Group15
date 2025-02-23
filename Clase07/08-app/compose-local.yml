@@ -1,0 +1,43 @@
+services:
+  frontend:
+    image: localhost:5000/frontend
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: frontend
+    ports:
+      - "9000:4000"
+    environment:
+      - BACKEND1=http://localhost:9010/api/product
+      - PORT=4000
+    networks:
+      - mynet
+
+  backend1:
+    image: localhost:5000/backend1
+    build:
+      context: ./backend1
+      dockerfile: Dockerfile
+    container_name: backend1
+    ports:
+      - "9010:4010"
+    environment:
+      - BACKEND2=http://backend2:4020/api/product
+      - PORT=4010
+    networks:
+      - mynet
+
+  backend2:
+    image: localhost:5000/backend2
+    build:
+      context: ./backend2
+      dockerfile: Dockerfile
+    container_name: backend2
+    environment:
+      - PORT=4020
+    networks:
+      - mynet
+
+networks:
+  mynet:
+    driver: bridge
