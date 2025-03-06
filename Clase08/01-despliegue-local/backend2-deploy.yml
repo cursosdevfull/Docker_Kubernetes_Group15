@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backend2-deploy
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      env: dev
+      app: backend2
+  template:
+    metadata:
+      labels:
+        env: dev
+        app: backend2
+    spec:
+      containers:
+        - name: backend2
+          image: localhost:5000/backend2
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 3020
+          env:
+            - name: PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: cm-parameters
+                  key: BACKEND2_PORT                
